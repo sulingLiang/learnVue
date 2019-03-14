@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>嵌套命名视图</title>
+    <script src="/js/vue.js"></script>
+    <script src="/js/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>嵌套命名视图</h1>
+        <router-view></router-view>
+    </div>
+    <script>
+        const UserSettingsNav = {
+            template:`
+                <div>
+                    <ul>
+                        <li><router-link to="/setting/email">emails</router-link></li>
+                        <li><router-link to="/setting/profile">profiles</router-link></li>
+                    </ul>
+                </div>
+            `
+        }
+        const UserSettings = {
+            template:`
+                <div>
+                    <h3>user setting</h3>
+                    <UserSettingsNav />
+                    <router-view></router-view>
+                    <router-view name="helper"></router-view>
+                </div>
+            `,
+            components: {UserSettingsNav}
+        }
+        const UserProfile = {
+            template: `
+                <div>
+                    <h3>Email UserProfile</h3>
+                </div>
+            `
+        }
+        const UserEmailsSubscriptions = {
+            template: `
+                <div>
+                    <h3>Email Subscriptions</h3>
+                </div>
+            `
+        }
+        const UserPreview = {
+            template: '<div>UserPreview</div>'
+        }
+        const router = new VueRouter({
+            routes: [{
+                path: '/setting',
+                component: UserSettings,
+                children:[{
+                    path: 'email',
+                    component: UserEmailsSubscriptions
+                }, {
+                    path: 'profile',
+                    components: {
+                        default: UserPreview,
+                        helper:UserProfile
+                    }
+                }]
+            }]
+        })
+        router.push('/setting/email')
+        new Vue({
+            router,
+            el: '#app'
+        })
+    </script>
+</body>
+</html>

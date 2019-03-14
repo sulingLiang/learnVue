@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>命名视图</title>
+    <!-- <script src="/js/vue.js"></script>
+    <script src="/js/vue-router.js"></script> -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>命名视图</h1>
+        <ul>
+            <router-link to="/" tag="li">home</router-link>
+            <router-link to="/other" tag="li">others</router-link>
+        </ul>
+        <router-view></router-view>
+        <router-view name="a"></router-view>
+        <router-view name="b"></router-view>
+    </div>
+    <script>
+        const Foo = {template: '<div> Foo</div>'}
+        const Bar = {template: '<div> Bar</div>'}
+        const Baz = {template: '<div>Baz</div>'}
+         const router = new VueRouter({
+            mode: 'history',
+            routes: [{
+                path: '/',
+                components: {
+                    default: Baz,
+                    a: Foo,
+                    b: Bar
+                }
+            }, {
+                path: '/other',
+                components: {
+                    default: Foo,
+                    a: Baz,
+                    b: Bar
+                }
+            }]
+        }) 
+        new Vue({
+            router,
+            el: '#app'
+        })
+    </script>
+</body>
+</html>

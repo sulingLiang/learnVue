@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>重定向和别名</title>
+    <script src="/js/vue.js"></script>
+    <script src="/js/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Route Alias</h1>
+        <ul>
+            <!-- <li><router-link to="/foo">/foo (renders /home/foo)</router-link></li>
+            <li><router-link to="/home">/home</router-link></li>
+             -->
+             <li><router-link to="/bar">/bar</router-link></li>
+            <li><router-link to="/baz">/baz</router-link></li>
+        </ul>
+        <router-view class="view"></router-view>
+    </div>
+    <script>
+        const Bar = { template: '<div><h1>bar</h1></div>' }
+        const Baz = { template: '<div>baz</div>' }
+        const router = new VueRouter({
+            mode: 'history',
+            routes: [
+                {   path: '/bar', component: Bar,
+                    children: [
+                    // absolute alias
+                         { path: 'baz', component: Baz, alias: '/baz' }
+                    ]
+                }
+            ]
+        })
+        new Vue({
+            router,
+        }).$mount('#app')
+    </script>
+</body>
+</html>

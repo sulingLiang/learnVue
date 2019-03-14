@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>重定向和别名</title>
+    <script src="/js/vue.js"></script>
+    <script src="/js/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Route Alias</h1>
+        <ul>
+            <li><router-link to="/home-root">/home</router-link></li>
+            <li><router-link to="/foo">/home/foo</router-link></li>
+            <li><router-link to="/bar">/bar</router-link></li>
+            <li><router-link to="/bar/baz">/baz</router-link></li>
+        </ul>
+        <router-view class="view"></router-view>
+    </div>
+    <script>
+        const Home = {template: '<div><h1>Home</h1><router-view></router-view></div>'}
+        const Foo = {template: '<div>Foo</div>'}
+        const Bar = {template: '<div>Bar</div>'}
+        const Baz = {template: '<div>Baz</div>'}
+        const router = new VueRouter({
+            mode: 'history',
+            routes: [{
+                path: '/home-root', component: Home, alias: '/home'
+            }, {
+                path: 'foo', component: Foo, alias: '/foo'
+            }, {
+                path: '/bar', component: Home,
+                children: [{
+                    path: 'baz', component: Baz, alias: '/baz'
+                }]
+            }]
+        })
+        new Vue({
+            router
+        }).$mount('#app')
+        /* new Vue({
+            router,
+            template:`
+                <div id="app">
+                    <h1>重命名和别名</h1>
+                    <ul>
+                        <li><router-link to="/home">/home</router-link></li>
+                        <li><router-link to="/foo">/home/foo</router-link></li>
+                        <li><router-link to="/bar">/bar</router-link></li>
+                        <li><router-link to="/baz">/baz</router-link></li>
+                    </ul>
+                    <router-view></router-view>
+                </div>
+            `
+        }).$mount('#app') */
+    </script>
+</body>
+</html>
